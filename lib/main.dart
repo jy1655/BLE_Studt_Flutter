@@ -1,0 +1,58 @@
+import 'package:flutter/material.dart';
+
+import 'central_page.dart';
+import 'peripheral_page.dart';
+
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'BLE Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MyFirstPage(),
+    );
+  }
+}
+
+class MyFirstPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('모드 선택'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FlutterBlueApp()),
+                );
+              },
+              child: Text('central'),
+            ),
+            SizedBox(height: 20), // 버튼 사이의 간격
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FlutterBlePeripheralExample()),
+                );
+              },
+              child: Text('peripheral'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
