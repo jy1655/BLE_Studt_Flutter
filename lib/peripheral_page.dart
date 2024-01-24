@@ -14,24 +14,23 @@ class FlutterBlePeripheralExample extends StatefulWidget {
       FlutterBlePeripheralExampleState();
 }
 
-class FlutterBlePeripheralExampleState
-// 광고 데이터 설정
-// 이 데이터는 BLE 광고 시 사용
-
-    extends State<FlutterBlePeripheralExample> {
+class FlutterBlePeripheralExampleState extends State<FlutterBlePeripheralExample> {
+      // 광고 데이터 설정
+      // 이 데이터는 BLE 광고 시 사용
   final AdvertiseData advertiseData = AdvertiseData(
-    serviceUuid: '44277344-4444-4477-7777-278767970777',
+    serviceUuid: 'b79cb3ba-745e-5d9a-8903-4a02327a7e09',
     localName: 'BLESTUDYTEST',
     manufacturerId: 1234,
     manufacturerData: Uint8List.fromList([1, 2, 3, 4, 5, 6]),
   );
 
+  final FlutterBlePeripheral blePeripheral = FlutterBlePeripheral();
   
-  // final advertiseSettings = AdvertiseSettings(
-  //   advertiseMode: AdvertiseMode.advertiseModeBalanced,
-  //   txPowerLevel: AdvertiseTxPower.advertiseTxPowerMedium,
-  //   timeout: 3000,
-  // );
+  final advertiseSettings = AdvertiseSettings(
+    advertiseMode: AdvertiseMode.advertiseModeBalanced,
+    txPowerLevel: AdvertiseTxPower.advertiseTxPowerMedium,
+    timeout: 30000, // 30초
+  );
 
   // 광고 파라미터 설정
   // 이 파라미터는 BLE 광고의 세부 설정을 정의합니다.
@@ -39,6 +38,7 @@ class FlutterBlePeripheralExampleState
 
   // BLE 지원 여부를 저장하는 함수
   bool _isSupported = false;
+  bool _isAdvertising = false;
 
   // initState 메소드
   // 위젯이 생성될 때 호출되며, 여기서 플랫폼 상태를 초기화합니다.
@@ -51,24 +51,20 @@ class FlutterBlePeripheralExampleState
   // 플랫폼 상태 초기화
   // BLE 기능이 지원되는지 확인합니다.
   Future<void> initPlatformState() async {
-    final isSupported = await FlutterBlePeripheral().isSupported;
-    setState(() {
-      _isSupported = isSupported;
-    });
+    _isSupported = await blePeripheral.isSupported;
+    setState(() {});
   }
 
   // BLE 광고를 시작하는 메소드
-Future<void> _startAdvertising() async {
-  await FlutterBlePeripheral().start(
-    advertiseData: advertiseData,
-    advertiseSetParameters: advertiseSetParameters,
-  );
-}
-
-// BLE 광고를 중지하는 메소드
-Future<void> _stopAdvertising() async {
-  await FlutterBlePeripheral().stop();
-}
+  Future<void> toggleAdvertising() async {
+    if (_isAdvertising) {
+      await blePeripheral.stop();
+      setState(() => _isAdvertising = false);
+    } else {
+      await blePeripheral.start(advertiseData: advertiseData);
+      setState(() => _isAdvertising = true);
+    }
+  }
 
   // 광고 토글 메소드
   // 현재 광고 중이면 중지하고, 그렇지 않으면 광고를 시작합니다.
@@ -135,7 +131,6 @@ Future<void> _stopAdvertising() async {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      scaffoldMessengerKey: _messangerKey,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Flutter BLE Peripheral'),
@@ -154,22 +149,16 @@ Future<void> _stopAdvertising() async {
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   return Text(
                     'State: ${(snapshot.data as PeripheralState).name}',
+                    // 'Data received: ${snapshot.data}'
                   );
                 },
               ),
-              // StreamBuilder(
-              //     stream: FlutterBlePeripheral().getDataReceived(),
-              //     initialData: 'None',
-              //     builder:
-              //         (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              //       return Text('Data received: ${snapshot.data}');
-              //     },),
 
               // 광고 데이터와 UUID를 표시합니다. 
               Text('Current UUID: ${advertiseData.serviceUuid}'),
               // 광고 시작/중지 버튼입니다.
               MaterialButton(
-                onPressed: _startAdvertising,
+                onPressed: toggleAdvertising,
                 child: Text(
                   'Toggle advertising',
                   style: Theme.of(context)
