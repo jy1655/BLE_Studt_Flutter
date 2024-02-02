@@ -4,9 +4,11 @@ import 'central_page.dart';
 import 'peripheral_page.dart';
 
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,17 +17,19 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyFirstPage(),
+      home: const MyFirstPage(),
     );
   }
 }
 
 class MyFirstPage extends StatelessWidget {
+  const MyFirstPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('모드 선택'),
+        title: const Text('모드 선택'),
       ),
       body: Center(
         child: Column(
@@ -38,9 +42,9 @@ class MyFirstPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const FlutterBlueApp()),
                 );
               },
-              child: Text('central'),
+              child: const Text('central'),
             ),
-            SizedBox(height: 20), // 버튼 사이의 간격
+            const SizedBox(height: 20), // 버튼 사이의 간격
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -48,7 +52,7 @@ class MyFirstPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const FlutterBlePeripheralExample()),
                 );
               },
-              child: Text('peripheral'),
+              child: const Text('peripheral'),
             ),
           ],
         ),

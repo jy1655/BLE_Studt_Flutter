@@ -1,13 +1,11 @@
-import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ble_peripheral/flutter_ble_peripheral.dart';
 
 // BLE(Bluetooth Low Energy) 주변장치 기능을 제공하는 앱의 UI를 구성
 
 class FlutterBlePeripheralExample extends StatefulWidget {
-  const FlutterBlePeripheralExample({Key? key}) : super(key: key);
+  const FlutterBlePeripheralExample({super.key});
 
   @override
   FlutterBlePeripheralExampleState createState() =>
@@ -18,23 +16,40 @@ class FlutterBlePeripheralExampleState extends State<FlutterBlePeripheralExample
       // 광고 데이터 설정
       // 이 데이터는 BLE 광고 시 사용
   final AdvertiseData advertiseData = AdvertiseData(
+    
+    // Android & iOS
     serviceUuid: 'b79cb3ba-745e-5d9a-8903-4a02327a7e09',
-    localName: 'BLESTUDYTEST',
+    
+    // Android only
     manufacturerId: 1234,
-    manufacturerData: Uint8List.fromList([1, 2, 3, 4, 5, 6]),
+    // manufacturerData: Uint8List.fromList([1, 2, 3, 4, 5, 6]),
+    // serviceDataUuid: '07900000-7450-509a-8903-4a02327a7e09',
+    // serviceData: [1,2,3],
+    // includeDeviceName: true, // 데이터 값이 커지는 듯?
+    // serviceSolicitationUuid: '0000180D-0000-1000-8000-00805f9b34fb',
+
+    // iOS only
+    // localName: 'BLESTUDYTEST',
   );
 
   final FlutterBlePeripheral blePeripheral = FlutterBlePeripheral();
   
-  final advertiseSettings = AdvertiseSettings(
-    advertiseMode: AdvertiseMode.advertiseModeBalanced,
-    txPowerLevel: AdvertiseTxPower.advertiseTxPowerMedium,
-    timeout: 30000, // 30초
-  );
+  
+  // AdvertiseSetParameters 보다는 단순한 설정용
+  // final advertiseSettings = AdvertiseSettings(
+  //   connectable: true,
+  //   // advertiseMode: AdvertiseMode.advertiseModeBalanced,
+  //   txPowerLevel: AdvertiseTxPower.advertiseTxPowerMedium,
+  //   timeout: 30000, // 30초
+  // );
 
   // 광고 파라미터 설정
   // 이 파라미터는 BLE 광고의 세부 설정을 정의합니다.
-  final AdvertiseSetParameters advertiseSetParameters = AdvertiseSetParameters();
+  final AdvertiseSetParameters advertiseSetParameters = AdvertiseSetParameters(
+    connectable: true,
+    scannable: true,
+    duration: 30000, // 30초
+  );
 
   // BLE 지원 여부를 저장하는 함수
   bool _isSupported = false;
@@ -125,6 +140,7 @@ class FlutterBlePeripheralExampleState extends State<FlutterBlePeripheralExample
 
   // ScaffoldMessenger의 키
   final _messangerKey = GlobalKey<ScaffoldMessengerState>();
+
 
   // build 메소드
   // UI를 구성하는 메소드입니다.
