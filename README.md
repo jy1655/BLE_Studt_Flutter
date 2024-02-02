@@ -9,11 +9,14 @@ v0.1 프로젝트 생성당시 목표는 예전에 제작한 swift로 작성된 
 
 pubspec.yaml 파일에 작성
 
-- flutter_blue_plus ^1.31.8 : It supports BLE Central Role only (most common)
+- flutter_blue_plus ^1.31.9 : It supports BLE Central Role only (most common)
     (https://pub.dev/packages?q=flutter_blue)
 
 - flutter_ble_peripheral ^1.2.3 : BLE Peripheral Role을 위한 dependency. iOS에서는 굉장히 제한적으로 사용가능
     (https://pub.dev/packages/flutter_ble_peripheral)
+
+- flutter_background_service ^5.0.5 : 어플리케이션 백그라운드에서도 작동할 수 있도록
+    (https://pub.dev/packages/flutter_background_service)
 
 https://pub.dev/ 에서 버전확인
 
@@ -24,6 +27,7 @@ https://pub.dev/ 에서 버전확인
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
 - iOS(ios/Runner/Info.plist)
     <key>NSBluetoothPeripheralUsageDescription</key>

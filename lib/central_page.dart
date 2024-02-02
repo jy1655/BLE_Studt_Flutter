@@ -8,7 +8,7 @@ void main() {
 }
 
 class FlutterBlueApp extends StatefulWidget {
-  const FlutterBlueApp({Key? key}) : super(key: key);
+  const FlutterBlueApp({super.key});
 
   @override
   State<FlutterBlueApp> createState() => _FlutterBlueAppState();
@@ -53,7 +53,7 @@ class _FlutterBlueAppState extends State<FlutterBlueApp> {
 class BluetoothOffScreen extends StatelessWidget {
   final BluetoothAdapterState adapterState;
 
-  const BluetoothOffScreen({Key? key, required this.adapterState}) : super(key: key);
+  const BluetoothOffScreen({super.key, required this.adapterState});
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +64,11 @@ class BluetoothOffScreen extends StatelessWidget {
 }
 
 class ScanScreen extends StatelessWidget {
-  const ScanScreen({Key? key}) : super(key: key);
+  const ScanScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Scanning for Bluetooth devices...'),
     );
   }
